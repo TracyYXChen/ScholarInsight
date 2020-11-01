@@ -1,0 +1,39 @@
+{
+    "name": "Scholar Filter",
+    "version": "0.1",
+    "description": "An tool to filter authorship in Google Scholar.",
+    "devtools_page": "devtools.html",
+    "icons": {
+        "16": "img/magGlass.png",
+        "48": "img/magGlass.png",
+        "128": "img/magGlass.png"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "run_at": "document_idle",
+            "css": [
+                "inserted-styles.css"
+            ],
+            "js": [
+                "lib/jquery-3.5.0.min.js",
+                "content-script.js"            ]
+        }
+    ],
+    "background": {
+        "scripts": [
+            "background.js"
+        ]
+    },
+    "permissions": [
+        "tabs",
+        "http://*/*",
+        "https://*/*"
+    ],
+    "manifest_version": 2,
+    "web_accessible_resources": [
+        "background.js"
+    ]
+}

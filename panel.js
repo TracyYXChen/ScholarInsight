@@ -8,7 +8,7 @@
 
 function updatePanel(msg) {
     var message = msg.message;
-    console.log("message", message);
+    console.log("message in panel.js", message);
     if (message.hasOwnProperty("tag")) {
         updateTag(message.tag);
     };

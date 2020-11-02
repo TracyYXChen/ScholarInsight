@@ -1,3 +1,10 @@
+var d3 = require('d3');
+
+window.addEventListener('message', (message) => {
+	// console.log("received message in injected script");
+  console.log("in scatter plot", message);  
+});
+
 data = [{
   date: 2009,
   wage: 7.25

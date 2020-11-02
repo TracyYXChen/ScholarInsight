@@ -1,7 +1,7 @@
 {
     "name": "Scholar Filter",
     "version": "0.1",
-    "description": "An tool to filter authorship in Google Scholar.",
+    "description": "A Chrome extension for filtering authorship in Google Scholar profiles.",
     "devtools_page": "devtools.html",
     "icons": {
         "16": "img/magGlass.png",
@@ -19,6 +19,7 @@
             ],
             "js": [
                 "lib/jquery-3.5.0.min.js",
+                "lib/d3-6.2.0.min.js",
                 "content-script.js"            ]
         }
     ],
@@ -34,6 +35,8 @@
     ],
     "manifest_version": 2,
     "web_accessible_resources": [
+        "scatter-plot.js",
+        "scatter-plot-bundled.js",
         "background.js"
     ]
 }

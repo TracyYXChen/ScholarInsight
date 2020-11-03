@@ -1,7 +1,8 @@
 .panel-header {
-    padding: 20px;
+    padding: 10px;
     text-align: center;
-    background: #1abc9c;
-    color: white;
+    background:white;
+    color: orange;
     font-size: 30px;
+    font-family: 'Underdog', cursive, 'Raleway', 'Arial Narrow Bold', sans-serif;
   }

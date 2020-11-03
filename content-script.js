@@ -9,7 +9,7 @@ window.addEventListener("message", function (event) {
         if (event.data.type && (event.data.type == "FROM_PAGE_TO_CONTENT_SCRIPT")) {
             // send to extension/background
             chrome.runtime.sendMessage(event.data);
-            // console.log("sent message from content-script");
+            console.log("sent message from content-script");
         }
     }
 })
@@ -24,20 +24,26 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 function doInject() {
-    var jsInitChecktimer = setInterval(updateScholarPage, 111);
-
+    //var jsInitChecktimer = setInterval(updateScholarPage, 111);
+    updateScholarPage();
     function updateScholarPage() {
         console.log("In content script, waiting to load...");
         var gsLoaded = checkForScholarPage();
         //console.log(document.querySelector('link[rel="canonical"]'));
         if (gsLoaded) {
-            clearInterval(jsInitChecktimer);
+            //clearInterval(jsInitChecktimer);
             console.log("This is a Google Scholar Profile Page");
-            var scriptElement;
-            scriptElement = document.createElement('script');
-            scriptElement.type = 'text/javascript';
-            scriptElement.src = chrome.runtime.getURL('scatter-plot-bundled.js');
-            return document.body.appendChild(scriptElement);
+            //var scriptElement;
+            //scriptElement = document.createElement('script');
+            //scriptElement.type = 'text/javascript';
+            //scriptElement.src = chrome.runtime.getURL('scatter-plot-bundled.js');
+            //use panel to inject directly
+            //return document.body.appendChild(scriptElement);
+            var panelElement;
+            panelElement = document.createElement('script');
+            panelElement.type = 'text/javascript';
+            panelElement.src = chrome.runtime.getURL('panel-bundled.js');
+            return document.body.appendChild(panelElement);
             //plot_scatter();
         }
         else {
@@ -48,13 +54,14 @@ function doInject() {
 
 function checkForScholarPage() {
     var foundElement = false;
+    var curUrl = '';
     //check whether it's a google scholar file
     //can't use tab query except in background.js
-    curUrl = document.querySelector('link[rel="canonical"]').href;
-    console.log(curUrl);
-    if (curUrl.startsWith('http://scholar.google.com/citations?user=')){
-    //.startsWidh('https://scholar.google.com/citations?user='))
-        foundElement = true;
+    if (document.querySelector('link[rel="canonical"]') !== null) {
+        curUrl = document.querySelector('link[rel="canonical"]').href;
+        if (curUrl.startsWith('http://scholar.google.com/citations?user=')){
+            foundElement = true;
+        }
     }
     return foundElement;
 }

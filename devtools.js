@@ -24,8 +24,9 @@ chrome.devtools.panels.create("Scholar Filter", "img/magGlass.png", "panel.html"
 
     // Listen for messages from background, and update panel's info with message received
     port.onMessage.addListener(function (message) {
-        // chrome.devtools.inspectedWindow.eval(`console.log(${JSON.stringify(message)});`);
-
+        chrome.devtools.inspectedWindow.eval(`console.log(${JSON.stringify(message)});`);
+        console.log("in devtools", message);
+        console.log("in devtools - stringify", JSON.stringify(message));
         if (_window) {
             // chrome.devtools.inspectedWindow.eval(`console.log("updating panel...");`);
             _window.updatePanel(message);

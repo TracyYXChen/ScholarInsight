@@ -35,6 +35,8 @@
     ],
     "manifest_version": 2,
     "web_accessible_resources": [
+        "panel.js",
+        "panel-bundled.js",
         "scatter-plot.js",
         "scatter-plot-bundled.js",
         "background.js"

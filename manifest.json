@@ -19,7 +19,7 @@
             ],
             "js": [
                 "lib/jquery-3.5.0.min.js",
-                "lib/d3-6.2.0.min.js",
+                "lib/d3.v5.min.js",
                 "content-script.js"            ]
         }
     ],

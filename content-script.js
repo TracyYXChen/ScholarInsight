@@ -2,6 +2,29 @@ debugger;
 
 window.addEventListener("load", doInject, false);
 
+var port = chrome.runtime.connect();
+
+window.addEventListener("message", function (event) {
+    // console.log("got message in content-script");
+    if (event.source == window) {
+        if (event.data.type && (event.data.type == "FROM_PAGE_TO_CONTENT_SCRIPT")) {
+            // send to extension/background
+            chrome.runtime.sendMessage(event.data);
+            // console.log("sent message from content-script");
+        }
+    }
+})
+
+// Listen for messages from background.js
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.name === "updateSelectionType" || message.name === "updateHighlight") {
+        // console.log("received message in content-script to update selection type to " + message.message);
+        window.postMessage(message);
+        // console.log("sent message to activate-hover injected");
+    }
+});
+
+
 function doInject() {
     //var jsInitChecktimer = setInterval(updateScholarPage, 111);
     updateScholarPage();

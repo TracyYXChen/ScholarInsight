@@ -30184,9 +30184,7 @@ var $ = require('jquery');
      // Listen for messages from background, and update panel's info with message received
      window.port.onMessage.addListener(function (message) {
          chrome.devtools.inspectedWindow.eval(`console.log("received message from ${message.source} in panel");`);
-         //chrome.devtools.inspectedWindow.eval(`console.log(${message.message});`);
-         //chrome.devtools.inspectedWindow.eval(`console.log(${JSON.parse(message.message)});`);
-         chrome.devtools.inspectedWindow.eval(`console.log(${JSON.stringify(message)});`);
+         chrome.devtools.inspectedWindow.eval(`console.log(${JSON.stringify(message.message.message.citationData)});`);
          if (message.message) {
              updatePanel(message);
          }
@@ -30194,9 +30192,7 @@ var $ = require('jquery');
  })();
 
 function updatePanel(message) {
-     chrome.devtools.inspectedWindow.eval(`console.log('in panel');`);
-     chrome.devtools.inspectedWindow.eval(`console.log(${JSON.stringify(msg.message.citationData)});`);
-     data = msg.message.citationData;
+     data = JSON.parse(message.message.message.citationData);
      scatterPlot(data);
 }
 

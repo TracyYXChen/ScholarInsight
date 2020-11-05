@@ -30169,6 +30169,37 @@ return jQuery;
 var d3 = require('d3');
 var $ = require('jquery');
 
+console.log('before connection');
+
+//receive data
+(function createConnection() {
+     // Create a connection to the background page
+     window.port = chrome.runtime.connect({name: "panel-bundled"});
+ 
+     // Initial message on connecting
+     window.port.postMessage({
+         name: 'initPanel',
+         tabId: chrome.devtools.inspectedWindow.tabId,
+         source: 'panel-bundled.js'
+     });
+     //console.log('outside listener');
+     // Listen for messages from background, and update panel's info with message received
+     window.port.onMessage.addListener(function (message) {
+      //console.log('in addlistener');
+        //console.log(message);
+         chrome.devtools.inspectedWindow.eval(`console.log("received message from ${message.source} in panel");`);
+         chrome.devtools.inspectedWindow.eval(`console.log(${JSON.stringify(message)});`);
+         if (message.message) {
+             updatePanel(message);
+         }
+     });
+ })();
+
+ console.log('am I connected');
+
+function updatePanel(msg) {
+     console.log("MSG in panel-bundled.js", msg)
+}
 
 //extract table
 /*
@@ -30185,6 +30216,7 @@ console.log("in the panel.js")
 console.log(data);
 console.log(Date.now());
 */
+
 data = [{citation:91, year:2007}, 
      {citation:473, year:2008}, 
      {citation:207, year:2008},

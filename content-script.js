@@ -2,27 +2,58 @@ debugger;
 
 window.addEventListener("load", doInject, false);
 
-var port = chrome.runtime.connect();
-
+//var port = chrome.runtime.connect();
+/*
 window.addEventListener("message", function (event) {
-    // console.log("got message in content-script");
+    console.log("got message in content-script");
     if (event.source == window) {
         if (event.data.type && (event.data.type == "FROM_PAGE_TO_CONTENT_SCRIPT")) {
             // send to extension/background
             chrome.runtime.sendMessage(event.data);
-            // console.log("sent message from content-script");
+            console.log("sent message from content-script");
+            console.log(event.data);
         }
     }
 })
+*/
+
+//pass the msg to background.js
+window.addEventListener("message", function (event) {
+    window.port = chrome.runtime.connect({name: "content-script"});
+    console.log(event);
+    window.port.postMessage({
+        name: 'citation data',
+        //tabId: chrome.devtools.inspectedWindow.tabId,
+        message: event.data,
+        source: 'content-script.js'
+    });
+})
+
+/*
+(function createConnection() {
+    // Create a connection to the background page
+    window.port = chrome.runtime.connect({name: "content-script"});
+
+    // Initial message on connecting
+    window.port.postMessage({
+        name: 'init',
+        tabId: chrome.devtools.inspectedWindow.tabId,
+        source: 'content-script.js'
+    });
+    console.log('outside listener');
+
+
+    
+})();
+*/
+
 
 // Listen for messages from background.js
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message.name === "updateSelectionType" || message.name === "updateHighlight") {
+//chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         // console.log("received message in content-script to update selection type to " + message.message);
-        window.postMessage(message);
-        // console.log("sent message to activate-hover injected");
-    }
-});
+        //console.log("sent message to activate-hover injected");
+//        window.postMessage(message);
+//    });
 
 
 function doInject() {
@@ -36,7 +67,7 @@ function doInject() {
             var panelElement;
             panelElement = document.createElement('script');
             panelElement.type = 'text/javascript';
-            panelElement.src = chrome.runtime.getURL('panel-bundled.js');
+            panelElement.src = chrome.runtime.getURL('prepare-data-bundled.js');
             return document.body.appendChild(panelElement);
            
         }

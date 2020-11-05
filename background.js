@@ -17,6 +17,7 @@ chrome.runtime.onConnect.addListener(function (port) {
 });
 
 //post to devtools.js
+console.log(relayMsg);
 chrome.runtime.onConnect.addListener(function(port) {
     port.postMessage(relayMsg);
 });

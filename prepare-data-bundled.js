@@ -10884,33 +10884,8 @@ $('tr.gsc_a_tr').each(function (i, el) {
     data.push(tmp)
 });
 
-//var packData = {citationData: JSON.stringify(data)};
+var packData = {citationData: JSON.stringify(data)};
 //do I really need to stringify
-/*
-var packData = [{citation:91, year:2007}, 
-	{citation:473, year:2008}, 
-	{citation:207, year:2008},
-	{citation:180, year:2008}, 
-	{citation:117, year:2008}, 
-	{citation:93, year:2008},
-	{citation:402, year:2009}, 
-	{citation:255, year:2010}, 
-	{citation:174, year:2010},
-	{citation:110, year:2010}, 
-	{citation:240, year:2011}, 
-	{citation:219, year:2011},
-	{citation:106, year:2011}, 
-	{citation:72, year:2011},
-	{citation:172, year:2012},
-	{citation:69, year:2012}, 
-	{citation:70, year:2013},
-	{citation:103, year:2014}, 
-	{citation:88, year:2014}
-]
-*/
-var packData = "msg from bundled";
-
-
 
 window.postMessage({
     type: "FROM_PAGE_TO_CONTENT_SCRIPT",

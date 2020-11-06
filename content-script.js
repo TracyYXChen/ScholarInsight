@@ -20,7 +20,7 @@ window.addEventListener("message", function (event) {
 //pass the msg to background.js
 window.addEventListener("message", function (event) {
     window.port = chrome.runtime.connect({name: "content-script"});
-    console.log(event);
+    //console.log(event);
     window.port.postMessage({
         name: 'citation data',
         //tabId: chrome.devtools.inspectedWindow.tabId,

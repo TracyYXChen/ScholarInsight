@@ -30197,17 +30197,31 @@ function updatePanel(message) {
 }
 
 function scatterPlot(data) {
+     // format the data
+     data.forEach(function (d) {
+          //parseDate = d3.timeParse("%Y");
+          d.year = +d.year;
+          d.citation = +d.citation;
+          });
+          //sort the data by year
+          data.sort(function (a, b) {
+          return a.year - b.year;
+     });
+     chrome.devtools.inspectedWindow.eval(`console.log(in scatter plot, the data is);`);
+     chrome.devtools.inspectedWindow.eval(`console.log(${JSON.stringify(data)})`);
+
      //get median citation for each year
      var medCit = d3.nest()
-     .key(function(d) { return d.year; })
-     .sortKeys(d3.ascending)
-     .rollup(function(d) {
-     return {
-     medCitation: d3.median(d, function(g) { return g['citation']; })
-     };
-     })
-     .map(data);
-
+          .key(function(d) { return d.year; })
+          .sortKeys(d3.ascending)
+          .rollup(function(d) {
+               return {
+                    medCitation: d3.median(d, function(g) { return +g['citation']; })
+               };
+          })
+          .map(data);
+     chrome.devtools.inspectedWindow.eval(`console.log(med citation is);`);
+     //chrome.devtools.inspectedWindow.eval(`console.log(${JSON.stringify(medCit)});`);
 
      var margin = {
      top: 20,
@@ -30218,16 +30232,7 @@ function scatterPlot(data) {
      width = 600 - margin.left - margin.right;
      height = 400 - margin.top - margin.bottom;
 
-     // format the data
-     data.forEach(function (d) {
-     //parseDate = d3.timeParse("%Y");
-     d.year = +d.year;
-     d.citation = +d.citation;
-     });
-     //sort the data by year
-     data.sort(function (a, b) {
-     return a.year - b.year;
-     });
+     
 
      var x = d3.scaleLinear().range([0, width]);
      var y = d3.scaleLinear().range([height, 0]);
@@ -30276,10 +30281,12 @@ function scatterPlot(data) {
      xAxisTicks = x.ticks()
      .filter(tick => Number.isInteger(tick));
 
+     yAxisTicks = y.ticks()
+     .filter(tick => Number.isInteger(tick));
+
      svg.append("g")
      .attr("transform", "translate(0," + height + ")")
-     .call(d3.axisBottom(x).tickValues(xAxisTicks)
-     .tickFormat(d3.format('d')));
+     .call(d3.axisBottom(x).tickValues(xAxisTicks).tickFormat(d3.format('d')));
      //x label
      svg.append('text')
      .attr('class', 'label')
@@ -30287,7 +30294,7 @@ function scatterPlot(data) {
      .text('Published Year');
 
      svg.append("g")
-     .call(d3.axisLeft(y).tickFormat(d => d));
+     .call(d3.axisLeft(y).tickValues(yAxisTicks).tickFormat(d3.format('d')));
      //y label
      svg.append('text')
      .attr('class', 'label')

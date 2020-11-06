@@ -30647,7 +30647,10 @@ function scatterPlot(data) {
      var toolTip = d3Tip()
           .attr("class", "d3-tip")
           .html(function(d) {
-               return "<h5>"+d['title']+"</h5>"+"<h5>Citation: "+d['citation']+" Year: "+d['year']+"</h5>"
+               return "<div style='width:150px;color: #1A0DAB; font-family: Arial, Helvetica, sans-serif; font-size:14px'>"+d['title']+"</div>"+
+                    "<div style='width:150px;color: #777777'; font-family: Arial, Helvetica, sans-serif'; font-size:12px>"+d['author']+"</div>"+
+                    "<div style='width:150px;color: #777777'; font-family: Arial, Helvetica, sans-serif'; font-size:12px>"+d['journal']+"</div>"+
+                    "<div style='color: #222222'; font-family: Arial, Helvetica, sans-serif'; font-size:14px>Citation: "+d['citation']+"  Year: "+d['year']+"</div>"
      });
 
      svg.call(toolTip);

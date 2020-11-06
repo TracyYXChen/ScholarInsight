@@ -10885,7 +10885,11 @@ var intervalID = setInterval(function () {
     $('tr.gsc_a_tr').each(function (i, el) {
         tmp = {};
         var $tds = $(this).find('td');
-        tmp['title'] = $tds.eq(0).text();
+        tmp['title']=$tds.eq(0).closest(".gsc_a_t").find(".gsc_a_at")[0].innerText;
+        tmpComb = $tds.eq(0).closest(".gsc_a_t").find(".gs_gray"); 
+        tmp['author']=tmpComb[0].textContent; 
+        tmp['journal']=tmpComb[1].textContent;
+
         rawCit = $tds.eq(1).text();
         //process citation
         if (rawCit === '') {

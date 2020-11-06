@@ -1,6 +1,7 @@
 // Function called in devtools.js
 var d3 = require('d3');
 var $ = require('jquery');
+var d3Tip = require('d3-tip');
 
 //receive data
 (function createConnection() {
@@ -133,4 +134,17 @@ function scatterPlot(data) {
      .attr('class', 'label')
      .attr('transform','translate(-40,200) rotate(270)')
      .text('Citations (so far)');
+
+
+     //add tooltips
+     var toolTip = d3Tip()
+          .attr("class", "d3-tip")
+          .html(function(d) {
+               return "<h5>"+d['title']+"</h5>"+"<h5>Citation: "+d['citation']+" Year: "+d['year']+"</h5>"
+     });
+
+     svg.call(toolTip);
+     dot.on('mouseover', toolTip.show)
+          .on('mouseout', toolTip.hide);
+
 }

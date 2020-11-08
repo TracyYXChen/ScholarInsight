@@ -30561,12 +30561,12 @@ function scatterPlot(data) {
                };
           })
           .map(data);
-     chrome.devtools.inspectedWindow.eval(`console.log(med citation is);`);
+     //chrome.devtools.inspectedWindow.eval(`console.log(med citation is);`);
      //chrome.devtools.inspectedWindow.eval(`console.log(${JSON.stringify(medCit)});`);
 
      var margin = {
      top: 20,
-     right: 20,
+     right: 100,
      bottom: 80,
      left: 80
      }
@@ -30585,13 +30585,7 @@ function scatterPlot(data) {
      return d.citation;
      })]);
 
-     var valueline = d3.line()
-     .x(function (d) {
-          return x(d.year);
-     })
-     .y(function (d) {
-          return y(d.citation);
-     });
+     
 
      var svg = d3.select("#main-vis").append("svg")
      .attr("width", width + margin.left + margin.right)
@@ -30602,7 +30596,7 @@ function scatterPlot(data) {
      var dot = svg.selectAll("dot")
      .data(data)
      .enter().append("circle")
-     .attr("r", 5)
+     .attr("r", 2)
      .attr("cx", function (d) {
           return x(d.year);
      })
@@ -30611,13 +30605,45 @@ function scatterPlot(data) {
      })
      //change color based on relative position compared with median citations
      .style('fill', function(d) {
-          if (d.citation > medCit['$'+d.year]['medCitation']) {
+          if (d.firstAuthor === True) {
                return 'blue'
           }
-          else {
+          else if (d.lastAuthor === True) {
                return 'orange'
           }
+          else {
+               return 'black'
+          }
      })
+
+     //median citation line
+     svg.append("path")
+          .datum(data)
+          .attr("fill", "none")
+          .attr("stroke", "steelblue")
+          .attr("stroke-width", 1.5)
+          .style("stroke-dasharray", ("3, 3"))
+          .attr("d", d3.line()
+            .x(function(d) { return x(d.year) })
+            .y(function(d) { return y(medCit['$'+d.year]['medCitation']) })
+            );
+     //add legend
+     svg.append("line")
+          .attr("x1", 405)
+          .attr("x2", 433)
+          .attr("y1", 10)
+          .attr("y2", 10)
+          .style("stroke-dasharray","3,3")
+          .style("stroke", "steelblue");
+
+     svg.append("text")
+          .attr("x", 435)
+          .attr("y", 12)
+          .text("Median Citation")
+          .style("font-size", "12px")
+          .attr("alignment-baseline","right")
+
+
 
      xAxisTicks = x.ticks()
      .filter(tick => Number.isInteger(tick));

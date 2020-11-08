@@ -2,6 +2,9 @@
 //const { data } = require('jquery');
 //var data = []
 var $ = require('jquery')
+var authorName = ($('#gsc_prf_in')[0].innerText).split(' ');
+var authorFirst = authorName[0];
+var authorLast = authorName[authorName.length-1];
 //load 'show more'
 var loadTimes = 0;
 var intervalID = setInterval(function () {
@@ -12,9 +15,29 @@ var intervalID = setInterval(function () {
         var $tds = $(this).find('td');
         tmp['title']=$tds.eq(0).closest(".gsc_a_t").find(".gsc_a_at")[0].innerText;
         tmpComb = $tds.eq(0).closest(".gsc_a_t").find(".gs_gray"); 
-        tmp['author']=tmpComb[0].textContent; 
-        tmp['journal']=tmpComb[1].textContent;
+        tmp['author']=tmpComb[0].textContent;
+        tmp['firstAuthor'] = false;
+        tmp['lastAuthor'] = false; 
+        //get authorship
+        if (tmp['author'].length !== 0) {
+            authorArr = tmp['author'].split(', ');
+            //only take one letter for first name
+            //first and last names of the first author
+            firstInit = authorArr[0].split(' ')[0][0];
+            firstLast = authorArr[0].split(' ')[1];
+            //first and last names of the last author
+            lastInit = authorArr[authorArr.length-1].split(' ')[0][0];
+            lastLast = authorArr[authorArr.length-1].split(' ')[1];
+            //compare with the profile's name
+            if (authorFirst.startsWith(firstInit) && authorLast===firstLast) {
+                tmp['firstAuthor']=True;
+            }
+            if (authorLast.startsWith(lastInit) && authorLast===lastLast) {
+                tmp['lastAuthor']=True;
+            }
+        }
 
+        tmp['journal']=tmpComb[1].textContent;
         rawCit = $tds.eq(1).text();
         //process citation
         if (rawCit === '') {

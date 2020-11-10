@@ -30,10 +30,10 @@ var intervalID = setInterval(function () {
             lastLast = authorArr[authorArr.length-1].split(' ')[1];
             //compare with the profile's name
             if (authorFirst.startsWith(firstInit) && authorLast===firstLast) {
-                tmp['firstAuthor']=True;
+                tmp['firstAuthor']=true;
             }
             if (authorLast.startsWith(lastInit) && authorLast===lastLast) {
-                tmp['lastAuthor']=True;
+                tmp['lastAuthor']=true;
             }
         }
 

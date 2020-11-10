@@ -30505,7 +30505,6 @@ return jQuery;
 } );
 
 },{}],35:[function(require,module,exports){
-// Function called in devtools.js
 var d3 = require('d3');
 var $ = require('jquery');
 var d3Tip = require('d3-tip');
@@ -30596,7 +30595,7 @@ function scatterPlot(data) {
      var dot = svg.selectAll("dot")
      .data(data)
      .enter().append("circle")
-     .attr("r", 2)
+     .attr("r", 3)
      .attr("cx", function (d) {
           return x(d.year);
      })
@@ -30604,15 +30603,16 @@ function scatterPlot(data) {
           return y(d.citation);
      })
      //change color based on relative position compared with median citations
+     //.style('fill', "none")
      .style('fill', function(d) {
-          if (d.firstAuthor === True) {
-               return 'blue'
-          }
-          else if (d.lastAuthor === True) {
+          if (d.firstAuthor === true) {
                return 'orange'
           }
+          else if (d.lastAuthor === true) {
+               return 'steelblue'
+          }
           else {
-               return 'black'
+               return 'grey'
           }
      })
 
@@ -30620,21 +30620,21 @@ function scatterPlot(data) {
      svg.append("path")
           .datum(data)
           .attr("fill", "none")
-          .attr("stroke", "steelblue")
+          .attr("stroke", "grey")
           .attr("stroke-width", 1.5)
           .style("stroke-dasharray", ("3, 3"))
           .attr("d", d3.line()
             .x(function(d) { return x(d.year) })
             .y(function(d) { return y(medCit['$'+d.year]['medCitation']) })
             );
-     //add legend
+     //add legend for the line
      svg.append("line")
           .attr("x1", 405)
           .attr("x2", 433)
           .attr("y1", 10)
           .attr("y2", 10)
           .style("stroke-dasharray","3,3")
-          .style("stroke", "steelblue");
+          .style("stroke", "grey");
 
      svg.append("text")
           .attr("x", 435)
@@ -30643,7 +30643,45 @@ function scatterPlot(data) {
           .style("font-size", "12px")
           .attr("alignment-baseline","right")
 
+     //add legend for dots
+    svg.append("circle")
+          .attr('r', 3)
+          .attr('cx', 419)
+          .attr('cy', 20)
+          .style('fill', 'orange')
+          
+    svg.append('text')
+          .attr("x", 435)
+          .attr("y", 24)
+          .text("First-author")
+          .style("font-size", "12px")
+          .attr("alignment-baseline","right")
 
+    svg.append("circle")
+          .attr('r', 3)
+          .attr('cx', 419)
+          .attr('cy', 30)
+          .style('fill', 'steelblue')
+          
+    svg.append('text')
+          .attr("x", 435)
+          .attr("y", 34)
+          .text("Last-author")
+          .style("font-size", "12px")
+          .attr("alignment-baseline","right")
+
+    svg.append("circle")
+          .attr('r', 3)
+          .attr('cx', 419)
+          .attr('cy', 40)
+          .style('fill', 'grey')
+          
+    svg.append('text')
+          .attr("x", 435)
+          .attr("y", 44)
+          .text("Others")
+          .style("font-size", "12px")
+          .attr("alignment-baseline","right")
 
      xAxisTicks = x.ticks()
      .filter(tick => Number.isInteger(tick));
@@ -30657,7 +30695,7 @@ function scatterPlot(data) {
      //x label
      svg.append('text')
      .attr('class', 'label')
-     .attr('transform','translate(250, 360)')
+     .attr('transform','translate(200, 340)')
      .text('Published Year');
 
      svg.append("g")

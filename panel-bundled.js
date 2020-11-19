@@ -30326,8 +30326,9 @@ function scatterPlot(data) {
         })
         //change color based on relative position compared with median citations
         //.style('fill', "none")
-        .style('fill', 'grey')
+        //.style('fill', 'grey')
         .style('fill', function(d) {
+          console.log(d.lastAuthor);
           if (d.firstAuthor === true) {
                return 'orange'
           }

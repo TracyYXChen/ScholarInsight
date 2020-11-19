@@ -10889,7 +10889,11 @@ var intervalID = setInterval(function () {
         tmp = {};
         var $tds = $(this).find('td');
         tmp['title']=$tds.eq(0).closest(".gsc_a_t").find(".gsc_a_at")[0].innerText;
-        tmp['titleLink'] = $tds.eq(0).closest(".gsc_a_t").find(".gsc_a_at")[0].dataset['href'];
+        //the link couldn't be called due to security reasons
+        //tmp['titleLink'] = $tds.eq(0).closest(".gsc_a_t").find(".gsc_a_at")[0].dataset['href'];
+        //call google scholar
+        //sepTitle = tmp["title"].replaceAll(' ', '+');
+        //tmp['titleLink'] = "https://scholar.google.com/scholar?hl=en&as_sdt=0%2C21&q=" + sepTitle + "&btnG=";
         tmpComb = $tds.eq(0).closest(".gsc_a_t").find(".gs_gray"); 
         tmp['author']=tmpComb[0].textContent;
         tmp['firstAuthor'] = false;
@@ -10908,7 +10912,7 @@ var intervalID = setInterval(function () {
             if (authorFirst.startsWith(firstInit) && authorLast===firstLast) {
                 tmp['firstAuthor']=true;
             }
-            if (authorLast.startsWith(lastInit) && authorLast===lastLast) {
+            if (authorFirst.startsWith(lastInit) && authorLast===lastLast) {
                 tmp['lastAuthor']=true;
             }
         }

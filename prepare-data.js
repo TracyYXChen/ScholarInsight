@@ -37,7 +37,7 @@ var intervalID = setInterval(function () {
             if (authorFirst.startsWith(firstInit) && authorLast===firstLast) {
                 tmp['firstAuthor']=true;
             }
-            if (authorLast.startsWith(lastInit) && authorLast===lastLast) {
+            if (authorFirst.startsWith(lastInit) && authorLast===lastLast) {
                 tmp['lastAuthor']=true;
             }
         }

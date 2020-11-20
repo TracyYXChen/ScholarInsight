@@ -1,5 +1,5 @@
 {
-    "name": "Scholar Filter",
+    "name": "Scholar Insight",
     "version": "0.1",
     "description": "A Chrome extension for filtering authorship in Google Scholar profiles.",
     "devtools_page": "devtools.html",

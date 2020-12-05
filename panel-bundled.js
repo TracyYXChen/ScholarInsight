@@ -30489,11 +30489,21 @@ function scatterPlot(data) {
           );
         }
         
-        $("#Reset").click(() => {
+        $("#reset").click(() => {
           //console.log('click');
           clip.transition()
             .duration(750)
             .call(zoom.transform, d3.zoomIdentity);
+        });
+
+        d3.select('#zoom-in').on('click', function() {
+          // Smooth zooming
+        	zoom.scaleBy(svg.transition().duration(750), 1.3);
+        });
+
+        d3.select('#zoom-out').on('click', function() {
+          // Smooth zooming
+        	zoom.scaleBy(svg.transition().duration(750), 1/1.3);
         });
 
 }

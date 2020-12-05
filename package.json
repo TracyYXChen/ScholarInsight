@@ -18,12 +18,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TracyYXChen/ScholarFilter.git"
+    "url": "git+https://github.com/TracyYXChen/ScholarInsight.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/TracyYXChen/ScholarFilter/issues"
+    "url": "https://github.com/TracyYXChen/ScholarInsight/issues"
   },
-  "homepage": "https://github.com/TracyYXChen/ScholarFilter#readme"
+  "homepage": "https://github.com/TracyYXChen/ScholarInsight#readme"
 }

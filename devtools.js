@@ -3,7 +3,7 @@
 // chrome.extension.*
 
 // Create a tab in the devtools area
-chrome.devtools.panels.create("Scholar Filter", "img/magGlass.png", "panel.html", function (panel) { 
+chrome.devtools.panels.create("Scholar Insight", "img/magGlass.png", "panel.html", function (panel) { 
     var _window; // reference to panel.html's window
 
     // Get panel window

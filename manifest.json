@@ -14,9 +14,6 @@
                 "<all_urls>"
             ],
             "run_at": "document_idle",
-            "css": [
-                "inserted-styles.css"
-            ],
             "js": [
                 "lib/jquery-3.5.0.min.js",
                 "lib/d3.v5.min.js",

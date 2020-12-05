@@ -30201,7 +30201,7 @@ function scatterPlot(data) {
           //parseDate = d3.timeParse("%Y");
           d.year = +d.year;
           d.citation = +d.citation;
-          d.jitterYear = +d.year + Math.random() * 0.4-0.2;
+          d.jitterYear = +d.year + Math.random() * 0.6-0.3;
           });
           //sort the data by year
           data.sort(function (a, b) {
@@ -30281,7 +30281,8 @@ function scatterPlot(data) {
         .text('Citations');
         
         // This add an invisible rect on top of the chart area. This rect can recover pointer events: necessary to understand when the user zoom
-        var square = svg
+        //var square = 
+        svg
           .append("rect")
           .attr("width", width)
           .attr("height", height)
@@ -30459,11 +30460,14 @@ function scatterPlot(data) {
         
         
         var zoom = d3.zoom()
-          .scaleExtent([0.5, 20])  // This control how much you can unzoom (x0.5) and zoom (x20)
+          .scaleExtent([0.5, 50])  // This control how much you can unzoom (x0.5) and zoom (x20)
           .extent([[0, 0], [width, height]])
           .on("zoom", updateChart);
         
-        square.call(zoom);
+        //square.call(zoom)
+        svg.call(zoom)
+          .on("dblclick.zoom", null);
+
         
         
         //zoom(svg);

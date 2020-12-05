@@ -14,7 +14,12 @@
 	<div class="panel-header"  style="display:inline;">
 		 Scholar Insight
 	</div>
-	<div class="citation-vis" id="main-vis">
+	<div class="filter">
+		<p>Select paper types to display:</p>
+		<input type="checkbox" id="first-only" name="first-only" value="first-only" checked> <span style="color: orange;">First-author</span>  
+    	<input type="checkbox" id="last-only" name="last-only" value="last-only" checked> <span style="color: steelblue;">Last-author</span>  
+    	<input type="checkbox" id="others" name="others" value="others" checked> <span style="color: #674A40">Others</span>
+	</div>
 	<div class="containter">
 		<p></p>
 		<span>
@@ -23,11 +28,14 @@
 		<button class="blue" id="reset">reset</button>
 		</span>
 	</div>
+	<div class="citation-vis" id="main-vis"></div>
+	
+
 		
 		
 	</div>
 	<script src="lib/jquery-3.5.0.min.js"></script>
-	<script src="lib/d3.v4.min.js"></script>
+	<script src="lib/d3.v5.min.js"></script>
 	<script src="panel-bundled.js"></script>
 </body>
 

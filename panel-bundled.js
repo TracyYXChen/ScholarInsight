@@ -30201,6 +30201,7 @@ function scatterPlot(data) {
           //parseDate = d3.timeParse("%Y");
           d.year = +d.year;
           d.citation = +d.citation;
+          d.jitterYear = +d.year + Math.random() * 0.4-0.2;
           });
           //sort the data by year
           data.sort(function (a, b) {
@@ -30256,8 +30257,7 @@ function scatterPlot(data) {
         yAxisTicks = y.ticks()
         .filter(tick => Number.isInteger(tick));
         
-        var svg = d3.select("body").append("svg")
-        .attr('id', 'main-vis')
+        var svg = d3.select("#main-vis").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
@@ -30278,7 +30278,7 @@ function scatterPlot(data) {
         svg.append('text')
         .attr('class', 'label')
         .attr('transform','translate(-40,200) rotate(270)')
-        .text('Citations (so far)');
+        .text('Citations');
         
         // This add an invisible rect on top of the chart area. This rect can recover pointer events: necessary to understand when the user zoom
         var square = svg
@@ -30315,20 +30315,18 @@ function scatterPlot(data) {
         dot.selectAll(".dot")
         .data(data)
         .enter().append("circle")
-        .attr("class", "dot")
         .attr("r", 3)
         .attr("cx", function (d) {
-          return x(d.year);
+          return x(d.jitterYear);
         })
         .attr("cy", function (d) {
-          
           return y(d.citation);
         })
         //change color based on relative position compared with median citations
         //.style('fill', "none")
         //.style('fill', 'grey')
         .style('fill', function(d) {
-          console.log(d.lastAuthor);
+          //console.log(d.lastAuthor);
           if (d.firstAuthor === true) {
                return 'orange'
           }
@@ -30336,13 +30334,31 @@ function scatterPlot(data) {
                return 'steelblue'
           }
           else {
-               return 'grey'
+               return '#674A40'
           }
         })
-        .on('mouseover', d => {
-          //console.log(d3.event.pageX, d3.event.pageY);
-          //console.log(d['titleLink']);
-          //console.log("<div style='width:400px;color: #1A0DAB; font-family: Arial, Helvetica, sans-serif; font-size:14px'><a href="+d['titleLink']+" target='_blank'>"+d['title']+"</a></div>");
+        .attr('class', function(d) {
+          //console.log(d.lastAuthor);
+          if (d.firstAuthor === true) {
+               return 'dot orange'
+          }
+          else if (d.lastAuthor === true) {
+               return 'dot steelblue'
+          }
+          else {
+               return 'dot otherColor'
+          }
+        })
+        .on('mouseover', function(d) {
+          //dotEnter.attr("r", 7);
+          d3.select(this).transition()
+          .duration('100')
+          .attr("r", 5);}
+        )
+        .on('mousedown', function(d) {
+          d3.select(this).transition()
+          .duration('100')
+          .attr("r", 4);
           toolTip.transition()
           .duration(400)
           .style('opacity', 1);
@@ -30356,11 +30372,11 @@ function scatterPlot(data) {
                  "<div style='color: #222222'; font-family: Arial, Helvetica, sans-serif'; font-size:14px>Citation: "+d['citation']+"  Year: "+d['year']+"</div>"
         );
         })
-        .on('mouseout', () => {
-          toolTip.transition()
-            .duration(400)
-            .style('opacity', 1);
-        });
+        .on('mouseout', function(d) {
+          d3.select(this).transition()
+          .duration('100')
+          .attr("r", 3);}
+          );
         
         
         var medline = svg.append('g')
@@ -30426,7 +30442,7 @@ function scatterPlot(data) {
           .attr('r', 3)
           .attr('cx', 419)
           .attr('cy', 46)
-          .style('fill', 'grey')
+          .style('fill', '#674A40')
           
         svg.append('text')
           .attr("x", 435)
@@ -30434,10 +30450,6 @@ function scatterPlot(data) {
           .text("Others")
           .style("font-size", "12px")
           .attr("alignment-baseline","right")
-        
-        
-        
-        
         
         //add toolTips
         //var toolTip = d3Tip()
@@ -30478,7 +30490,7 @@ function scatterPlot(data) {
         // update circle position
         dot
           .selectAll(".dot")
-          .attr('cx', function(d) {return newX(d.year)})
+          .attr('cx', function(d) {return newX(d.jitterYear)})
           .attr('cy', function(d) {return newY(d.citation)});
         
         medline
@@ -30489,21 +30501,73 @@ function scatterPlot(data) {
           );
         }
         
+        /*
         $("#reset").click(() => {
           //console.log('click');
           clip.transition()
             .duration(750)
             .call(zoom.transform, d3.zoomIdentity);
         });
+        */
+       d3.select('#reset').on('click', function() {
+         svg.transition()
+            .duration(200)
+            .call(zoom.transform, d3.zoomIdentity)
+       });
+
+
 
         d3.select('#zoom-in').on('click', function() {
           // Smooth zooming
-        	zoom.scaleBy(svg.transition().duration(750), 1.3);
+          zoom.scaleBy(svg.transition().duration(750), 1.3);
+          //clip.transition()
+          //  .duration(750)
+          //  .call(zoom.scaleBy(1.3));
         });
 
         d3.select('#zoom-out').on('click', function() {
           // Smooth zooming
-        	zoom.scaleBy(svg.transition().duration(750), 1/1.3);
+          zoom.scaleBy(svg.transition().duration(750), 1/1.3);
+          //clip.transition()
+          //.duration(750)
+          //.call(zoom.scaleBy(1/1.3));
+          
+        });
+
+        firstCheck = document.getElementById('first-only');
+        firstCheck.addEventListener('change', e => {
+          if (!e.target.checked) {
+            dot.selectAll(".orange")
+              .style('fill', 'white');
+          }
+          else {
+            dot.selectAll(".orange")
+            .style('fill', 'orange');
+          }
+        });
+
+        lastCheck = document.getElementById('last-only');
+        lastCheck.addEventListener('change', e => {
+          if (!e.target.checked) {
+            dot.selectAll(".steelblue")
+              .style('fill', 'white');
+          }
+          else {
+            dot.selectAll(".steelblue")
+            .style('fill', 'steelblue');
+          }
+        });
+
+        otherCheck = document.getElementById('others');
+        otherCheck.addEventListener('change', e => {
+          if (!e.target.checked) {
+            dot.selectAll(".otherColor")
+              .style('fill', 'white');
+          }
+          else {
+            dot.selectAll(".otherColor")
+            .style('fill', '#674A40');
+          }
         });
 
 }

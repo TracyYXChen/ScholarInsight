@@ -30273,6 +30273,7 @@ function scatterPlot(data) {
         .text('Published Year');
         
         yAxis = svg.append("g")
+        .attr("class", "axis axis-y")
         .call(d3.axisLeft(y).tickValues(yAxisTicks).tickFormat(d3.format('d')));
         //y label
         svg.append('text')
@@ -30484,24 +30485,25 @@ function scatterPlot(data) {
         newxAxisTicks = newX.ticks()
         .filter(tick => Number.isInteger(tick));
         
-        newyAxisTicks = newY.ticks()
-        .filter(tick => Number.isInteger(tick));
+        //newyAxisTicks = newY.ticks(5);
+        //.filter(tick => Number.isInteger(tick));
         
         // update axes with these new boundaries
-        xAxis.call(d3.axisBottom(newX).tickValues(newxAxisTicks).tickFormat(d3.format('d')))
-        yAxis.call(d3.axisLeft(newY).tickValues(newyAxisTicks).tickFormat(d3.format('d')))
+        xAxis.call(d3.axisBottom(newX).tickValues(newxAxisTicks).tickFormat(d3.format('d')));
+        //yAxis.call(d3.axisLeft(newY).tickValues(newyAxisTicks).tickFormat(d3.format('d')))
+        yAxis.call(d3.axisLeft(newY).ticks());
         
         // update circle position
         dot
           .selectAll(".dot")
           .attr('cx', function(d) {return newX(d.jitterYear)})
-          .attr('cy', function(d) {return newY(d.citation)});
+          .attr('cy', function(d) {return newY(d.citation+1)});
         
         medline
           .selectAll("path")
           .attr("d", d3.line()
           .x(function(d) { return newX(d.year) })
-          .y(function(d) { return newY(medCit['$'+d.year]['medCitation']) })
+          .y(function(d) { return newY(medCit['$'+d.year]['medCitation']+1) })
           );
         }
         
@@ -30542,7 +30544,7 @@ function scatterPlot(data) {
         firstCheck.addEventListener('change', e => {
           if (!e.target.checked) {
             dot.selectAll(".orange")
-              .style('fill', 'white');
+              .style('fill', 'none');
           }
           else {
             dot.selectAll(".orange")
@@ -30554,7 +30556,7 @@ function scatterPlot(data) {
         lastCheck.addEventListener('change', e => {
           if (!e.target.checked) {
             dot.selectAll(".steelblue")
-              .style('fill', 'white');
+              .style('fill', 'none');
           }
           else {
             dot.selectAll(".steelblue")
@@ -30566,7 +30568,7 @@ function scatterPlot(data) {
         otherCheck.addEventListener('change', e => {
           if (!e.target.checked) {
             dot.selectAll(".otherColor")
-              .style('fill', 'white');
+              .style('fill', 'none');
           }
           else {
             dot.selectAll(".otherColor")
@@ -30574,5 +30576,57 @@ function scatterPlot(data) {
           }
         });
 
+        //change axis
+        axisBtn = document.querySelector("#axisType").axisRadio;
+        for (var i=0; i<axisBtn.length; i++) {
+          axisBtn[i].addEventListener('change', function() {
+            axisSelect = this.value;
+            if (axisSelect === 'linear-citation') {
+              d3.selectAll('.axis-y').remove();
+              d3.selectAll('.path').remove();
+              y = d3.scaleLinear().range([height, 0]);
+              y.domain([0, d3.max(data, function (d) {
+                return d.citation*1.05;
+                })]);
+              yAxisTicks = y.ticks()
+                .filter(tick => Number.isInteger(tick));
+              yAxis = svg.append("g")
+                .attr("class", "axis axis-y")
+                .call(d3.axisLeft(y).tickValues(yAxisTicks).tickFormat(d3.format('d')));
+              dot.selectAll(".dot")
+                .attr('cy', function(d) {return y(d.citation)});
+              
+              medline
+                .selectAll("path")
+                .attr("d", d3.line()
+                .x(function(d) { return x(d.year) })
+                .y(function(d) { return y(medCit['$'+d.year]['medCitation']+1)})
+              );
+            }
+            else {
+              d3.selectAll('.axis-y').remove();
+              d3.selectAll('.path').remove();
+              y = d3.scaleLog().range([height, 0]);
+              y.domain([1, d3.max(data, function (d) {
+                return d.citation*1.2;
+                })]);
+              //yAxisTicks = y.ticks(0, "e");
+                //.filter(tick => Number.isInteger(tick/100));
+              yAxis = svg.append("g")
+                .attr("class", "axis axis-y")
+                .call(d3.axisLeft(y).ticks());
+              dot.selectAll(".dot")
+              .attr('cy', function(d) {
+                  return y(d.citation+1);
+            });
+              medline
+              .selectAll("path")
+              .attr("d", d3.line()
+              .x(function(d) { return x(d.year) })
+              .y(function(d) { return y(medCit['$'+d.year]['medCitation']+1)})
+          );
+          }
+  })
+  }
 }
 },{"d3":32,"jquery":33}]},{},[34]);

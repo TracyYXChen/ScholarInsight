@@ -3,10 +3,10 @@
 A Chrome Extension for visualizing Google Scholar profiles
 
 ## Motivation
-1. It’s a course project for [INST 760](https://sites.umiacs.umd.edu/elm/teaching/inst-760-data-visualization/)
-2. I found quite a few people ignore non-first-author papers (for student researchers) and non-last-author papers (for faculty researchers) when they examine a researcher's portfolio.
+It’s a course project for [INST 760](https://sites.umiacs.umd.edu/elm/teaching/inst-760-data-visualization/). A formal writeup is published on [Medium](https://medium.com/visumd/scholarinsight-a-chrome-web-browser-extension-for-visualizing-google-scholar-profiles-f953473d2e87).
 
-## Demo
+
+## Video Demo
 Here is a [video demo](https://youtu.be/7-C5sBFzqNc) on YouTube.
 
 ## Setup

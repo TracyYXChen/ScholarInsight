@@ -1,3 +1,4 @@
+April 2022: <span style="color: red;">Seems it no longer works with the latest Chrome browser</span>
 # ScholarInsight
 
 A Chrome Extension for visualizing Google Scholar profiles
